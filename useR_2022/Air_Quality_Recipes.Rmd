@@ -1,0 +1,170 @@
+---
+title: "Air Quality Recipes"
+subtitle: "Package APIs for R Dabblers"
+author: "Jonathan Callahan"
+date: "June 21, 2022"
+output:
+  xaringan::moon_reader:
+    css: [useR, useR-fonts]
+    lib_dir: libs
+---
+
+# Giving credit
+
+What I'll show represents the work of many people and support from several 
+different organizations:
+
+* US Forest Service AirFire Team
+* South Coast Air Quality Management District
+* Incorporated Research Institutions for Seismology
+* Mazama Science
+
+&nbsp;
+
+.center[
+  ![USFS](images/USFS_logo.png) &nbsp;
+  ![SCAQMD](images/SCAQMD_logo.jpg) &nbsp;
+  ![IRIS](images/IRIS_logo.png)
+  ![MazamaScience](images/MazamaScience_logo.png)
+]
+
+---
+
+# My winding path
+
+**Spectroscopy in graduate school**<br>
+&nbsp; - computers and data visualization
+
+**Scientist/Engineer at NOAA's PMEL**<br>
+&nbsp; - weather data and open source software
+
+**CEO of Mazama Science**<br>
+&nbsp; - writing R packages<br>
+&nbsp; - mentoring young people<br>
+&nbsp; - air quality data
+
+.right[ 
+  _Now at the Desert Research Institute._<br>
+  ![DRI](images/DRI_logo.png) 
+]
+
+---
+
+class: chapter-slide
+
+# Air Quality
+
+---
+
+## Air Quality is important!
+
+[World Economic Forum](https://www.weforum.org/agenda/2022/05/air-pollution-killing-millions-how-can-we-tackle/) May 25, 2022
+
+<p style="font-size: smaller; font-style: italic;">
+  "Air pollution ... claims the lives of 7 million people every year."
+</p>
+
+[World Bank Blog](https://blogs.worldbank.org/developmenttalk/air-pollution-kills-evidence-global-analysis-exposure-and-poverty) May 18, 2022
+
+<p style="font-size: smaller; font-style: italic;">
+  "... air pollution can reinforce socioeconomic inequalities."
+</p>
+
+<p style="font-size: smaller; font-style: italic;">
+  "2.8 billion people face hazardous air pollution levels."
+</p>
+
+[BBC](https://www.bbc.com/future/article/20220405-the-fungi-cleaning-new-delhis-air#:~:text=Twenty%2Done%20of%20the%20world's,toxic%20air%20in%20the%20country.) April 04, 2022
+
+<p style="font-size: smaller; font-style: italic;">
+  "Twenty-one of the world's 30 cities with the worst levels of air pollution are in India."
+</p>
+
+---
+
+## Air Quality data consumers
+
+Lots of people want to work with Air Quality data:
+
+* Air Qualty Management Districts (AQMDs)
+* Public health agencies
+* Schools
+* Hospitals
+* Researchers
+* Graduate Students
+* Citizen Scientists
+
+&nbsp;
+
+.right[_Air quality data is of interest to everyone!_]
+
+---
+
+## Air Quality analyst skills
+
+Many people in the air quality community still use Excel.
+
+Some folks do data munging in R ...
+
+--
+
+&nbsp; &nbsp; &nbsp; ... so they can continue working in Excel.
+
+--
+
+But R and RStudio could be the _**perfect tool**_ ...
+
+--
+
+&nbsp; &nbsp; &nbsp; ... for these reasons:
+
+* scripted and thus reproducible
+* potential for excellent graphics
+* _??? packages focused on air quality ???_
+
+
+---
+
+## Goals for Air Quality R packages
+
+* Meet the needs of air quality analysts.
+* Use a compact data model.
+* Use systematic naming for objects and functions.
+* Allow chaining of results.
+* Provide good graphics.
+* Provide lots of documentation and examples.
+
+&nbsp;
+
+.right[_Make the hard easy and the easy invisible._]
+
+---
+
+class: chapter-slide
+
+# Air Quality Packages
+
+---
+
+## The _Mazama_ package suite
+
+[MazamaCoreUtils](https://mazamascience.github.io/MazamaCoreUtils/)
+-- <span style="font-size: smaller;">utilities for production code</span> <br>
+[MazamaSpatialUtils](http://mazamascience.github.io/MazamaSpatialUtils/) 
+-- <span style="font-size: smaller;">spatial searching</span> <br>
+[MazamaLocationUtils](http://mazamascience.github.io/MazamaLocationUtils/) 
+-- <span style="font-size: smaller;">management of spatial metadata</span> <br>
+[MazamaTimeSeries](http://mazamascience.github.io/MazamaTimeSeries/) 
+-- <span style="font-size: smaller;">environmental time series</span> <br>
+[AirMonitor](http://mazamascience.github.io/AirMonitor/) 
+-- <span style="font-size: smaller;">utilities for air quality monitoring data</span> <br>
+[AirMonitorPlots](http://mazamascience.github.io/AirMonitorPlots/) 
+-- <span style="font-size: smaller;">plotting for <b>AirMonitor</b></span>
+
+&nbsp;
+
+.right[_Modular lego bricks for air quality analysis._]
+
+---
+
+

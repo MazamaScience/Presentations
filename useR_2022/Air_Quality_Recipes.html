@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Air Quality Recipes</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jonathan Callahan" />
+    <meta name="date" content="2022-06-21" />
+    <script src="libs/header-attrs-2.14/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/useR.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/useR-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Air Quality Recipes
+]
+.subtitle[
+## Package APIs for R Dabblers
+]
+.author[
+### Jonathan Callahan
+]
+.date[
+### June 21, 2022
+]
+
+---
+
+
+# Giving credit
+
+What I'll show represents the work of many people and support from several 
+different organizations:
+
+* US Forest Service AirFire Team
+* South Coast Air Quality Management District
+* Incorporated Research Institutions for Seismology
+* Mazama Science
+
+&amp;nbsp;
+
+.center[
+  ![USFS](images/USFS_logo.png) &amp;nbsp;
+  ![SCAQMD](images/SCAQMD_logo.jpg) &amp;nbsp;
+  ![IRIS](images/IRIS_logo.png)
+  ![MazamaScience](images/MazamaScience_logo.png)
+]
+
+---
+
+# My winding path
+
+**Spectroscopy in graduate school**&lt;br&gt;
+&amp;nbsp; - computers and data visualization
+
+**Scientist/Engineer at NOAA's PMEL**&lt;br&gt;
+&amp;nbsp; - weather data and open source software
+
+**CEO of Mazama Science**&lt;br&gt;
+&amp;nbsp; - writing R packages&lt;br&gt;
+&amp;nbsp; - mentoring young people&lt;br&gt;
+&amp;nbsp; - air quality data
+
+.right[ 
+  _Now at the Desert Research Institute._&lt;br&gt;
+  ![DRI](images/DRI_logo.png) 
+]
+
+---
+
+class: chapter-slide
+
+# Air Quality
+
+---
+
+## Air Quality is important!
+
+[World Economic Forum](https://www.weforum.org/agenda/2022/05/air-pollution-killing-millions-how-can-we-tackle/) May 25, 2022
+
+&lt;p style="font-size: smaller; font-style: italic;"&gt;
+  "Air pollution ... claims the lives of 7 million people every year."
+&lt;/p&gt;
+
+[World Bank Blog](https://blogs.worldbank.org/developmenttalk/air-pollution-kills-evidence-global-analysis-exposure-and-poverty) May 18, 2022
+
+&lt;p style="font-size: smaller; font-style: italic;"&gt;
+  "... air pollution can reinforce socioeconomic inequalities."
+&lt;/p&gt;
+
+&lt;p style="font-size: smaller; font-style: italic;"&gt;
+  "2.8 billion people face hazardous air pollution levels."
+&lt;/p&gt;
+
+[BBC](https://www.bbc.com/future/article/20220405-the-fungi-cleaning-new-delhis-air#:~:text=Twenty%2Done%20of%20the%20world's,toxic%20air%20in%20the%20country.) April 04, 2022
+
+&lt;p style="font-size: smaller; font-style: italic;"&gt;
+  "Twenty-one of the world's 30 cities with the worst levels of air pollution are in India."
+&lt;/p&gt;
+
+---
+
+## Air Quality data consumers
+
+Lots of people want to work with Air Quality data:
+
+* Air Qualty Management Districts (AQMDs)
+* Public health agencies
+* Schools
+* Hospitals
+* Researchers
+* Graduate Students
+* Citizen Scientists
+
+&amp;nbsp;
+
+.right[_Air quality data is of interest to everyone!_]
+
+---
+
+## Air Quality analyst skills
+
+Many people in the air quality community still use Excel.
+
+Some folks do data munging in R ...
+
+--
+
+&amp;nbsp; &amp;nbsp; &amp;nbsp; ... so they can continue working in Excel.
+
+--
+
+But R and RStudio could be the _**perfect tool**_ ...
+
+--
+
+&amp;nbsp; &amp;nbsp; &amp;nbsp; ... for these reasons:
+
+* scripted and thus reproducible
+* potential for excellent graphics
+* _??? packages focused on air quality ???_
+
+
+---
+
+## Goals for Air Quality R packages
+
+* Meet the needs of air quality analysts.
+* Use a compact data model.
+* Use systematic naming for objects and functions.
+* Allow chaining of results.
+* Provide good graphics.
+* Provide lots of documentation and examples.
+
+&amp;nbsp;
+
+.right[_Make the hard easy and the easy invisible._]
+
+---
+
+class: chapter-slide
+
+# Air Quality Packages
+
+---
+
+## The _Mazama_ package suite
+
+[MazamaCoreUtils](https://mazamascience.github.io/MazamaCoreUtils/)
+-- &lt;span style="font-size: smaller;"&gt;utilities for production code&lt;/span&gt; &lt;br&gt;
+[MazamaSpatialUtils](http://mazamascience.github.io/MazamaSpatialUtils/) 
+-- &lt;span style="font-size: smaller;"&gt;spatial searching&lt;/span&gt; &lt;br&gt;
+[MazamaLocationUtils](http://mazamascience.github.io/MazamaLocationUtils/) 
+-- &lt;span style="font-size: smaller;"&gt;management of spatial metadata&lt;/span&gt; &lt;br&gt;
+[MazamaTimeSeries](http://mazamascience.github.io/MazamaTimeSeries/) 
+-- &lt;span style="font-size: smaller;"&gt;environmental time series&lt;/span&gt; &lt;br&gt;
+[AirMonitor](http://mazamascience.github.io/AirMonitor/) 
+-- &lt;span style="font-size: smaller;"&gt;utilities for air quality monitoring data&lt;/span&gt; &lt;br&gt;
+[AirMonitorPlots](http://mazamascience.github.io/AirMonitorPlots/) 
+-- &lt;span style="font-size: smaller;"&gt;plotting for &lt;b&gt;AirMonitor&lt;/b&gt;&lt;/span&gt;
+
+&amp;nbsp;
+
+.right[_Modular lego bricks for air quality analysis._]
+
+---
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
