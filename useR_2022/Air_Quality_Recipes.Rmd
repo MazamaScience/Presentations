@@ -9,6 +9,22 @@ output:
     lib_dir: libs
 ---
 
+
+```{r setup, echo = FALSE}
+options(width = 60)
+
+suppressPackageStartupMessages({
+  library(MazamaSpatialUtils)
+  library(MazamaLocationUtils)
+  library(MazamaTimeSeries)
+})
+MazamaSpatialUtils::setSpatialDataDir("~/Data/Spatial")
+MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
+MazamaSpatialUtils::loadSpatialData("USCensusStates")
+
+known_locations <- MazamaLocationUtils::wa_monitors_500
+```
+
 # Giving credit
 
 What I'll show represents the work of many people and support from several 
@@ -116,11 +132,10 @@ But R and RStudio could be the _**perfect tool**_ ...
 
 --
 
-&nbsp; &nbsp; &nbsp; ... for these reasons:
-
-* scripted and thus reproducible
-* potential for excellent graphics
-* _??? packages focused on air quality ???_
+* scripted and reproducible
+* excellent graphics
+* interactive data visualization
+* _packages focused on air quality?_
 
 
 ---
@@ -128,9 +143,9 @@ But R and RStudio could be the _**perfect tool**_ ...
 ## Goals for Air Quality R packages
 
 * Meet the needs of air quality analysts.
-* Use a compact data model.
 * Use systematic naming for objects and functions.
 * Allow chaining of results.
+* Use a compact data model.
 * Provide good graphics.
 * Provide lots of documentation and examples.
 
@@ -157,7 +172,7 @@ class: chapter-slide
 [MazamaTimeSeries](http://mazamascience.github.io/MazamaTimeSeries/) 
 -- <span style="font-size: smaller;">environmental time series</span> <br>
 [AirMonitor](http://mazamascience.github.io/AirMonitor/) 
--- <span style="font-size: smaller;">utilities for air quality monitoring data</span> <br>
+-- <span style="font-size: smaller;">processing air quality monitoring data</span> <br>
 [AirMonitorPlots](http://mazamascience.github.io/AirMonitorPlots/) 
 -- <span style="font-size: smaller;">plotting for <b>AirMonitor</b></span>
 
@@ -167,4 +182,242 @@ class: chapter-slide
 
 ---
 
+## MazamaCoreUtils
+
+Utilities for writing _operational_ code.
+
+* Python style logging
+* Simple error messaging
+* Cache management
+* API key handling
+* Date-time parsing
+* Lat/lon validation and uniqueID creation
+* Source code linting
+
+---
+
+**Locations**
+
+```{r location_utilities, collapse = TRUE}
+MazamaCoreUtils::createLocationID(-127.27, 47.45)
+
+
+MazamaCoreUtils::createLocationID(-127.2700000232, 47.45)
+
+
+try({
+  MazamaCoreUtils::validateLonLat(
+    longitude = -127.27, 
+    latitude = "47.45°N"
+  )
+}, silent = FALSE)
+```
+
+---
+
+**Times (timezones are required)**
+
+```{r parseDatetime, collapse = TRUE}
+try({
+  MazamaCoreUtils::parseDatetime("2021-06-20 05:33")
+}, silent = FALSE)
+
+
+MazamaCoreUtils::parseDatetime(
+  datetime = "2021-06-20 05:33", 
+  timezone = "America/Los_Angeles"
+)
+
+
+MazamaCoreUtils::dateSequence(
+  startdate = 20210620, 
+  enddate = 20210622,
+  timezone = "America/Los_Angeles"
+)
+```
+
+---
+
+## MazamaSpatialUtils
+
+GIS point-in-polygon searches made simple.
+
+**Harmonized Datasets (plus simplified versions)**
+
+```
+ * 2.1M EEZCountries.RData
+ *  15M NaturalEarthAdm1.RData
+ *  61M OSMTimezones.RData
+ * 3.6M TMWorldBorders.RData
+ *  48MTerrestrialEcoregions.RData
+ * 7.5M USCensus115thCongress.RData
+ *  17M USCensusCounties.RData
+ * 4.6M USCensusStates.RData
+```
+ 
+---
+ 
+```{r spatial_demo_1, collapse = TRUE}
+lons <- seq(-0.5,19.5,5)
+lats <- seq(40,60,5)
+
+
+MazamaSpatialUtils::getCountryCode(lons, lats)
+
+
+MazamaSpatialUtils::getCountryName(lons, lats)
+
+
+MazamaSpatialUtils::getTimezone(lons, lats)
+```
+
+---
+
+```{r spatial_demo_2, collapse = TRUE}
+MazamaSpatialUtils::getStateCode(lons, lats)
+
+
+MazamaSpatialUtils::getStateName(lons, lats)
+
+
+MazamaSpatialUtils::getStateName(
+  longitude = lons, 
+  latitude = lats, 
+  useBuffering = TRUE
+)
+```
+
+---
+
+```{r spatial_plot, echo = FALSE, warning = FALSE, fig.cap = "Denmark with offshore location"}
+spdf <- subset(NaturalEarthAdm1, countryCode == "DK")
+plot(spdf)
+title("Denmark with offshore location")
+points(14.5, 55, pch = 16, col = 'red')
+```
+
+---
+
+## MazamaLocationUtils
+
+Instrument deployments -- aka "known locations".
+
+**Problem**
+* Many enviornmental time series are stationary.
+* Site locations metadata is expensive to acquire.
+* GPS locations can have "jitter".
+* Instruments move and get replaced.
+
+**Solution**
+* Keep a table of known locations.
+* Provide tools to find nearest location.
+
+---
+
+```{r known_locations, collapse = TRUE}
+lons <- known_locations$longitude[2:5] + c(-.1,-.01, .01, .1)
+lats <- known_locations$latitude[2:5] + c(-.1,-.01, .01, .1)
+
+table_getNearestLocation(
+  known_locations,
+  longitude = lons,
+  latitude = lats,
+  distanceThreshold = 5000 # meters
+) %>%
+dplyr::glimpse()
+```
+
+---
+
+## MazamaTimeSeries
+
+Compact data model -- separate `meta` and `data`.
+
+* Time-independent metadata goes in the `meta` tabble.
+* Time-dependent measurements go in the `data` tabble.
+* Reduces file sizes by factor of 10-100.
+* Reduces memory footprint by factor of 10-100.
+* Multiple Time Series (_'mts'_) share a common time axis
+
+---
+
+Data model is very compact but not "tidy". So we need our own manipulation
+functions:
+
+* `mts_collapse()`
+* `mts_combine()`
+* `mts_distinct()`
+* `mts_filterData()`
+* `mts_filterDatetime()`
+* `mts_filterMeta()`
+* `mts_getDistance()`
+* `mts_isEmpty()`
+* `mts_select()`
+* `mts_summarize()`
+* `mts_trimDate()`
+
+---
+
+## AirMonitor
+
+Work with pre-processed Air Quality data.
+
+* Maintained by the US Forest Service AirFire group.
+* PM2.5 data from regulatory and temporary monitors.
+* Updated every few minutes.
+* Archives go back a decade.
+* Used in operational sites: [Monitoring v4](https://tools.airfire.org/monitoring/v4) and [Fire & Smoke Map](https://fire.airnow.gov).
+* Database is accessible to anyone.
+
+---
+
+```{r camp_fire, collapse = TRUE}
+library(AirMonitor)
+
+Camp_Fire <-
+  monitor_loadAnnual(2018) %>%
+  monitor_filter(stateCode == 'CA') %>%
+  monitor_filterDate(
+    startdate = 20181108,
+    enddate = 20181123,
+    timezone = "America/Los_Angeles"
+  ) %>%
+  monitor_dropEmpty()
+```
+
+---
+
+```{r camp_fire_leaflet}
+monitor_leaflet(Camp_Fire)
+```
+
+---
+
+```{r sacramenmto}
+Sacramento <-
+  Camp_Fire %>%
+  monitor_select("8ca91d2521b701d4_060670010")
+
+Sacramento %>%
+  monitor_timeseriesPlot(shadedNight = TRUE, addAQI = TRUE)
+```
+
+---
+
+```{r sacramento_area}
+Sacramento_area_daily_average <-
+  Camp_Fire %>%
+  monitor_filterByDistance(
+    longitude = Sacramento$meta$longitude,
+    latitude = Sacramento$meta$latitude,
+    radius = 50000
+  ) %>%
+  monitor_collapse(
+    deviceID = "Sacramento_area"
+  ) %>%
+  monitor_dailyStatistic(FUN = mean) %>%
+  monitor_getData()
+
+head(Sacramento_area_daily_average)
+```
 
