@@ -137,7 +137,6 @@ But R and RStudio could be the _**perfect tool**_ ...
 * interactive data visualization
 * _packages focused on air quality?_
 
-
 ---
 
 ## Goals for Air Quality R packages
@@ -315,8 +314,8 @@ Instrument deployments -- aka "known locations".
 ---
 
 ```{r known_locations, collapse = TRUE}
-lons <- known_locations$longitude[2:5] + c(-.1,-.01, .01, .1)
-lats <- known_locations$latitude[2:5] + c(-.1,-.01, .01, .1)
+lons <- known_locations$longitude[2:3] + c(-.1,-.01)
+lats <- known_locations$latitude[2:3] + c(-.1,-.01)
 
 table_getNearestLocation(
   known_locations,
@@ -329,15 +328,18 @@ dplyr::glimpse()
 
 ---
 
+
 ## MazamaTimeSeries
 
 Compact data model -- separate `meta` and `data`.
 
-* Time-independent metadata goes in the `meta` tabble.
-* Time-dependent measurements go in the `data` tabble.
+* Time-independent metadata goes in the `meta` table.
+* Time-dependent measurements go in the `data` table.
+* Multiple Time Series (_'mts'_) share a common time axis.
+* A `deviceDeploymentID` connects `meta` and `data`.
 * Reduces file sizes by factor of 10-100.
 * Reduces memory footprint by factor of 10-100.
-* Multiple Time Series (_'mts'_) share a common time axis
+
 
 ---
 
