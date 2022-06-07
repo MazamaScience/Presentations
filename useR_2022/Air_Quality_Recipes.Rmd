@@ -17,6 +17,8 @@ suppressPackageStartupMessages({
   library(MazamaSpatialUtils)
   library(MazamaLocationUtils)
   library(MazamaTimeSeries)
+  library(AirMonitor)
+  library(AirMonitorPlots)
 })
 MazamaSpatialUtils::setSpatialDataDir("~/Data/Spatial")
 MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
@@ -130,8 +132,6 @@ Some folks do data munging in R ...
 
 But R and RStudio could be the _**perfect tool**_ ...
 
---
-
 * scripted and reproducible
 * excellent graphics
 * interactive data visualization
@@ -195,31 +195,13 @@ Utilities for writing _operational_ code.
 
 ---
 
-**Locations**
-
-```{r location_utilities, collapse = TRUE}
-MazamaCoreUtils::createLocationID(-127.27, 47.45)
-
-
-MazamaCoreUtils::createLocationID(-127.2700000232, 47.45)
-
-
-try({
-  MazamaCoreUtils::validateLonLat(
-    longitude = -127.27, 
-    latitude = "47.45°N"
-  )
-}, silent = FALSE)
-```
-
----
-
-**Times (timezones are required)**
+**Locations and Times (timezones are required)**
 
 ```{r parseDatetime, collapse = TRUE}
-try({
-  MazamaCoreUtils::parseDatetime("2021-06-20 05:33")
-}, silent = FALSE)
+MazamaCoreUtils::createLocationID(
+  longitude = -127.27, 
+  latitude = 47.45
+)
 
 
 MazamaCoreUtils::parseDatetime(
@@ -257,7 +239,7 @@ GIS point-in-polygon searches made simple.
 ---
  
 ```{r spatial_demo_1, collapse = TRUE}
-lons <- seq(-0.5,19.5,5)
+lons <- seq(0,20,5)
 lats <- seq(40,60,5)
 
 
@@ -268,15 +250,6 @@ MazamaSpatialUtils::getCountryName(lons, lats)
 
 
 MazamaSpatialUtils::getTimezone(lons, lats)
-```
-
----
-
-```{r spatial_demo_2, collapse = TRUE}
-MazamaSpatialUtils::getStateCode(lons, lats)
-
-
-MazamaSpatialUtils::getStateName(lons, lats)
 
 
 MazamaSpatialUtils::getStateName(
@@ -288,11 +261,15 @@ MazamaSpatialUtils::getStateName(
 
 ---
 
-```{r spatial_plot, echo = FALSE, warning = FALSE, fig.cap = "Denmark with offshore location"}
-spdf <- subset(NaturalEarthAdm1, countryCode == "DK")
+```{r spatial_plot, echo = FALSE, warning = FALSE, fig.align = "center", fig.height = 8, fig.width = 8}
+spdf <- subset(SimpleCountriesEEZ, countryCode == "FI")
 plot(spdf)
-title("Denmark with offshore location")
-points(14.5, 55, pch = 16, col = 'red')
+spdf <- subset(NaturalEarthAdm1, countryCode == "FI")
+plot(spdf, border = "blue", add = TRUE)
+spdf <- subset(SimpleCountriesEEZ, countryCode == "FI")
+plot(spdf, add = TRUE, lwd = 1.5)
+title("Offshore location")
+points(20, 60, pch = 16, col = 'red')
 ```
 
 ---
@@ -313,21 +290,6 @@ Instrument deployments -- aka "known locations".
 
 ---
 
-```{r known_locations, collapse = TRUE}
-lons <- known_locations$longitude[2:3] + c(-.1,-.01)
-lats <- known_locations$latitude[2:3] + c(-.1,-.01)
-
-table_getNearestLocation(
-  known_locations,
-  longitude = lons,
-  latitude = lats,
-  distanceThreshold = 5000 # meters
-) %>%
-dplyr::glimpse()
-```
-
----
-
 
 ## MazamaTimeSeries
 
@@ -335,8 +297,8 @@ Compact data model -- separate `meta` and `data`.
 
 * Time-independent metadata goes in the `meta` table.
 * Time-dependent measurements go in the `data` table.
-* Multiple Time Series (_'mts'_) share a common time axis.
 * A `deviceDeploymentID` connects `meta` and `data`.
+* Multiple Time Series (_'mts'_) share a common time axis.
 * Reduces file sizes by factor of 10-100.
 * Reduces memory footprint by factor of 10-100.
 
@@ -373,6 +335,8 @@ Work with pre-processed Air Quality data.
 
 ---
 
+## Our first recipe
+
 ```{r camp_fire, collapse = TRUE}
 library(AirMonitor)
 
@@ -380,8 +344,8 @@ Camp_Fire <-
   monitor_loadAnnual(2018) %>%
   monitor_filter(stateCode == 'CA') %>%
   monitor_filterDate(
-    startdate = 20181108,
-    enddate = 20181123,
+    startdate = "2018-11-08",
+    enddate = "2018-11-23",
     timezone = "America/Los_Angeles"
   ) %>%
   monitor_dropEmpty()
@@ -395,7 +359,7 @@ monitor_leaflet(Camp_Fire)
 
 ---
 
-```{r sacramenmto}
+```{r sacramenmto, fig.align = "center", fig.width = 6, fig.height = 5}
 Sacramento <-
   Camp_Fire %>%
   monitor_select("8ca91d2521b701d4_060670010")
@@ -422,4 +386,55 @@ Sacramento_area_daily_average <-
 
 head(Sacramento_area_daily_average)
 ```
+
+---
+
+## AirMonitorPlots
+
+Publication ready plots
+
+* **ggplot2** based
+* time series plot
+* daily barplots
+* daily/hourly barplot
+* diurnal cycle plot
+* build-your-own components
+
+---
+
+```{r time_of_day_plot_code, eval = FALSE}
+library(AirMonitorPlots)
+
+Carmel_Valley %>%
+  monitor_trimDate() %>%
+  monitor_ggDailyByHour_archival(title = "Carmel Valley")
+```
+
+```{r time_of_day_plot, echo = FALSE, message = FALSE, warning = FALSE, fig.align = "center", fig.width = 8, fig.height = 6}
+Carmel_Valley %>%
+  monitor_trimDate() %>%
+  monitor_ggDailyByHour_archival(title = "Carmel Valley")
+```
+
+---
+
+class: chapter-slide
+
+# Take Home Message
+
+---
+
+## Know your audience
+
+* Get feedback.
+* Meet them where they are.
+* Design small modular components.
+* Use explicit naming.
+* Sweat the details.
+* Be flexible.
+* Be consistent!!!
+
+
+.right[_Have fun playing with your new lego set!_]
+
 
