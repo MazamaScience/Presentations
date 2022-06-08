@@ -58,8 +58,8 @@ different organizations:
 
 **CEO of Mazama Science**<br>
 &nbsp; - writing R packages<br>
-&nbsp; - mentoring young people<br>
-&nbsp; - air quality data
+&nbsp; - air quality data<br>
+&nbsp; - mentoring young people
 
 .right[ 
   _Now at the Desert Research Institute._<br>
@@ -335,7 +335,31 @@ Work with pre-processed Air Quality data.
 
 ---
 
-## Our first recipe
+class: chapter-slide
+
+# Recipes
+
+---
+
+## What is a recipe?
+
+```
+Cake <-
+  flour %>%
+  add_sugar %>%
+  add_eggs %>%
+  add_other_flavors %>%
+  mix %>%
+  pour_into_cake_pan %>%
+  bake_in_oven_at_350 %>%
+  remove_and_cool %>%
+  add_icing %>%
+  add_sprinkles
+```
+
+---
+
+## Our first Air Quality recipe
 
 ```{r camp_fire, collapse = TRUE}
 library(AirMonitor)
@@ -434,6 +458,7 @@ class: chapter-slide
 * Be flexible.
 * Be consistent!!!
 
+&nbsp;
 
 .right[_Have fun playing with your new lego set!_]
 
