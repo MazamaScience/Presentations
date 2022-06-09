@@ -217,6 +217,13 @@ MazamaCoreUtils::dateSequence(
 )
 ```
 
+???
+
+Notice the explicit naming of arguments: longitude, latitude, datetime, timezone, _etc._
+  
+Using explicit, complete names is important. No more guessing what shorthand is
+used for longitude ("lon", "lng", "long", ...).
+
 ---
 
 ## MazamaSpatialUtils
@@ -258,6 +265,12 @@ MazamaSpatialUtils::getStateName(
   useBuffering = TRUE
 )
 ```
+
+???
+
+The `useBuffering` argument is important when your location is just outside a 
+polygon, perhaps on a peninsula or an island.  This is a case where we handle
+the literal and littoral "edge cases" and provide what people expect.
 
 ---
 
@@ -320,6 +333,11 @@ functions:
 * `mts_summarize()`
 * `mts_trimDate()`
 
+???
+
+Function names begin with a prefix that identifies the type of object they
+work on and return. In the case an "mts" aka "MultipleTimeSeries" object.
+
 ---
 
 ## AirMonitor
@@ -356,6 +374,9 @@ Cake <-
   add_icing %>%
   add_sprinkles
 ```
+&nbsp;
+
+.right[_Yum!_]
 
 ---
 
@@ -375,11 +396,20 @@ Camp_Fire <-
   monitor_dropEmpty()
 ```
 
+???
+
+Easy to understand what is happening.
+
 ---
 
 ```{r camp_fire_leaflet}
 monitor_leaflet(Camp_Fire)
 ```
+
+???
+
+Clicking on a location pops up spatial and instrument metadata including the
+unique `deviceDeploymentID`.
 
 ---
 
@@ -391,6 +421,11 @@ Sacramento <-
 Sacramento %>%
   monitor_timeseriesPlot(shadedNight = TRUE, addAQI = TRUE)
 ```
+
+???
+
+This timeseries plot is tailor made for the target audience with day/night
+shading and Air Quality Index colors. It is designed to be "publication ready".
 
 ---
 
@@ -410,6 +445,12 @@ Sacramento_area_daily_average <-
 
 head(Sacramento_area_daily_average)
 ```
+
+???
+
+A straightfoward recipe which results in two-column tibble with one column of
+day-start times in the local timezone and another column of daily average
+values. Perfect for loading into a spreadsheet.
 
 ---
 
@@ -439,6 +480,13 @@ Carmel_Valley %>%
   monitor_trimDate() %>%
   monitor_ggDailyByHour_archival(title = "Carmel Valley")
 ```
+
+???
+
+This diurnal plot shows when it would be better to stay inside and when the 
+air quality improves enough to go outside -- in the evenings. This is an 
+example of a plot that provides useful "actionable information" to the general
+public.
 
 ---
 
